@@ -61,51 +61,61 @@ export function App() {
   );
 
   const weather = data ?? null;
-
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8">
-      <div className="mx-auto flex max-w-3xl flex-col gap-6">
-        <header>
-          <h1 className="text-3xl font-bold text-slate-900">Weather App</h1>
-          <p className="mt-2 text-slate-600">
-            현재 위치 기반 날씨 정보를 확인합니다.
-          </p>
-        </header>
+    <main className="min-h-screen bg-slate-100 px-4 py-6 md:py-10">
+      <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-[360px_1fr]">
+        <aside className="space-y-6">
+          <header className="rounded-3xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-medium text-sky-600">Weather App</p>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900">
+              오늘 날씨 확인
+            </h1>
+            <p className="mt-3 text-sm leading-6 text-slate-500">
+              현재 위치 또는 검색한 대한민국 행정구역의 날씨를 확인합니다.
+            </p>
+          </header>
 
-        <PlaceSearchBox onSelectPlace={handleSelectPlace} />
+          <PlaceSearchBox onSelectPlace={handleSelectPlace} />
+        </aside>
 
-        {selectedPlaceName && (
-          <p className="text-sm text-slate-500">
-            선택한 장소: {selectedPlaceName}
-          </p>
-        )}
+        <section className="space-y-4">
+          {selectedPlaceName && (
+            <div className="rounded-2xl bg-white px-5 py-4 text-sm text-slate-600 shadow-sm">
+              선택한 장소:{" "}
+              <span className="font-semibold text-slate-900">
+                {selectedPlaceName}
+              </span>
+            </div>
+          )}
 
-        {locationError && (
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-            {locationError}
-          </div>
-        )}
+          {locationError && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              {locationError}
+            </div>
+          )}
 
-        {placeError && (
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-            {placeError}
-          </div>
-        )}
+          {placeError && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              {placeError}
+            </div>
+          )}
 
-        {isLoading && (
-          <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
-            날씨 정보를 불러오는 중입니다.
-          </div>
-        )}
+          {isLoading && (
+            <div className="rounded-3xl bg-white p-8 text-slate-500 shadow-sm">
+              날씨 정보를 불러오는 중입니다.
+            </div>
+          )}
 
-        {isError && (
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-            {error instanceof Error
-              ? error.message
-              : "날씨 정보를 불러오지 못했습니다."}
-          </div>
-        )}
-        {weather && <WeatherCard weather={weather} />}
+          {isError && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              {error instanceof Error
+                ? error.message
+                : "날씨 정보를 불러오지 못했습니다."}
+            </div>
+          )}
+
+          {weather && <WeatherCard weather={weather} />}
+        </section>
       </div>
     </main>
   );
