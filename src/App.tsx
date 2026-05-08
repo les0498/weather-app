@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useWeatherQuery } from "./entities/weather/model/useWeatherQuery";
 import { WeatherCard } from "./entities/weather/ui/WeatherCard";
 import { getCurrentPosition } from "./shared/lib/geoloaction";
+import { PlaceSearchBox } from "./features/search-place/ui/placeSearchBox";
+import type { Place } from "./entities/place/model/types";
 
 type Coordinates = {
   lat: number;
@@ -11,6 +13,10 @@ type Coordinates = {
 export function App() {
   const [coords, setCoords] = useState<Coordinates | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
+
+  const handleSelectPlace = (place: Place) => {
+    console.log("선택한 장소:", place);
+  };
 
   useEffect(() => {
     getCurrentPosition()
@@ -61,7 +67,7 @@ export function App() {
               : "날씨 정보를 불러오지 못했습니다."}
           </div>
         )}
-
+        <PlaceSearchBox onSelectPlace={handleSelectPlace} />
         {weather && <WeatherCard weather={weather} />}
       </div>
     </main>
