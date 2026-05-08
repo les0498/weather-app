@@ -18,6 +18,7 @@ export type WeatherSummary = {
   maxTemp: number;
   description: string;
   icon: string;
+  hourlyTemps: HourlyTemperature[];
 };
 
 export type ForecastResponse = {
@@ -27,4 +28,9 @@ export type ForecastResponse = {
       temp: number;
     };
   }[];
+};
+
+export type HourlyTemperature = {
+  time: string;
+  temp: number;
 };

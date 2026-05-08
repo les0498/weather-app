@@ -30,10 +30,32 @@ export function WeatherCard({ weather }: WeatherCardProps) {
         </p>
 
         <div className="mt-4 flex gap-4 text-sm text-slate-600">
-          <span>최저 {weather.minTemp}°</span>
-          <span>최고 {weather.maxTemp}°</span>
+          <span>예상 최저 {weather.minTemp}°</span>
+          <span>예상 최고 {weather.maxTemp}°</span>
         </div>
       </div>
+
+      {weather.hourlyTemps.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-sm font-semibold text-slate-700">
+            시간대별 기온
+          </h3>
+
+          <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+            {weather.hourlyTemps.map((item) => (
+              <div
+                key={item.time}
+                className="min-w-20 rounded-xl border border-slate-200 bg-slate-50 p-3 text-center"
+              >
+                <p className="text-xs text-slate-500">{item.time}</p>
+                <p className="mt-2 text-lg font-bold text-slate-900">
+                  {item.temp}°
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
