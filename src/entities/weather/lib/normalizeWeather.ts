@@ -5,37 +5,40 @@ import type {
   HourlyTemperature,
 } from "../model/types";
 
-const getKoreaDateString = () => {
-  const now = new Date();
+const formatKoreaDate = (timestamp: number) => {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(timestamp * 1000));
+};
 
-  const koreaNow = new Date(
-    now.toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
-  );
-
-  const year = koreaNow.getFullYear();
-  const month = String(koreaNow.getMonth() + 1).padStart(2, "0");
-  const date = String(koreaNow.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${date}`;
+const formatKoreaTime = (timestamp: number) => {
+  return new Intl.DateTimeFormat("ko-KR", {
+    timeZone: "Asia/Seoul",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date(timestamp * 1000));
 };
 
 const getTodayForecastItems = (forecast: ForecastResponse) => {
-  const today = getKoreaDateString();
+  const today = formatKoreaDate(Date.now() / 1000);
 
-  return forecast.list.filter((item) => item.dt_txt.startsWith(today));
+  return forecast.list.filter((item) => formatKoreaDate(item.dt) === today);
 };
 
 const getTodayMinMax = (
   current: OpenWeatherResponse,
   forecast: ForecastResponse,
 ) => {
-  const today = getKoreaDateString();
-
-  const forecastTemps = forecast.list
-    .filter((item) => item.dt_txt.startsWith(today))
-    .map((item) => item.main.temp);
+  const forecastTemps = getTodayForecastItems(forecast).map(
+    (item) => item.main.temp,
+  );
 
   const temps = [current.main.temp, ...forecastTemps];
+
   return {
     min: Math.min(...temps),
     max: Math.max(...temps),
@@ -43,13 +46,9 @@ const getTodayMinMax = (
 };
 
 const getHourlyTemps = (forecast: ForecastResponse): HourlyTemperature[] => {
-  const todayItems = getTodayForecastItems(forecast);
-
-  return todayItems.map((item) => {
-    const time = item.dt_txt.split(" ")[1].slice(0, 5);
-
+  return getTodayForecastItems(forecast).map((item) => {
     return {
-      time,
+      time: formatKoreaTime(item.dt),
       temp: Math.round(item.main.temp),
     };
   });

@@ -23,6 +23,7 @@ export type WeatherSummary = {
 
 export type ForecastResponse = {
   list: {
+    dt: number;
     dt_txt: string;
     main: {
       temp: number;
