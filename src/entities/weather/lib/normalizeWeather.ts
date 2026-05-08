@@ -5,14 +5,7 @@ import type {
   HourlyTemperature,
 } from "../model/types";
 
-const formatKoreaDate = (timestamp: number) => {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Seoul",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date(timestamp * 1000));
-};
+const FORECAST_ITEM_COUNT_FOR_24_HOURS = 8;
 
 const formatKoreaTime = (timestamp: number) => {
   return new Intl.DateTimeFormat("ko-KR", {
@@ -23,17 +16,15 @@ const formatKoreaTime = (timestamp: number) => {
   }).format(new Date(timestamp * 1000));
 };
 
-const getTodayForecastItems = (forecast: ForecastResponse) => {
-  const today = formatKoreaDate(Date.now() / 1000);
-
-  return forecast.list.filter((item) => formatKoreaDate(item.dt) === today);
+const getNext24HourForecastItems = (forecast: ForecastResponse) => {
+  return forecast.list.slice(0, FORECAST_ITEM_COUNT_FOR_24_HOURS);
 };
 
-const getTodayMinMax = (
+const getNext24HourMinMax = (
   current: OpenWeatherResponse,
   forecast: ForecastResponse,
 ) => {
-  const forecastTemps = getTodayForecastItems(forecast).map(
+  const forecastTemps = getNext24HourForecastItems(forecast).map(
     (item) => item.main.temp,
   );
 
@@ -46,7 +37,7 @@ const getTodayMinMax = (
 };
 
 const getHourlyTemps = (forecast: ForecastResponse): HourlyTemperature[] => {
-  return getTodayForecastItems(forecast).map((item) => {
+  return getNext24HourForecastItems(forecast).map((item) => {
     return {
       time: formatKoreaTime(item.dt),
       temp: Math.round(item.main.temp),
@@ -58,7 +49,7 @@ export const normalizeWeather = (
   current: OpenWeatherResponse,
   forecast: ForecastResponse,
 ): WeatherSummary => {
-  const { min, max } = getTodayMinMax(current, forecast);
+  const { min, max } = getNext24HourMinMax(current, forecast);
 
   return {
     locationName: current.name,
