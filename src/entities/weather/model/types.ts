@@ -19,3 +19,12 @@ export type WeatherSummary = {
   description: string;
   icon: string;
 };
+
+export type ForecastResponse = {
+  list: {
+    dt_txt: string;
+    main: {
+      temp: number;
+    };
+  }[];
+};
