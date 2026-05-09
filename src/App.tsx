@@ -6,6 +6,8 @@ import { PlaceSearchBox } from "./features/search-place/ui/placeSearchBox";
 import type { Place } from "./entities/place/model/types";
 import { getCoordsByKakao } from "./shared/api/kakaoApi";
 import { useFavorites } from "./features/favorite-place/model/useFavorites";
+import type { FavoritePlace } from "./entities/weather/model/types";
+import { FavoriteWeatherCard } from "./features/favorite-place/ui/FavoriteWeatherCard";
 
 type Coordinates = {
   lat: number;
@@ -82,6 +84,17 @@ export function App() {
     if (!success) {
       setPlaceError("즐겨찾기는 최대 6개까지 가능합니다.");
     }
+  };
+
+  const handleSelectFavorite = (favorite: FavoritePlace) => {
+    setPlaceError(null);
+    setSelectedPlace(null);
+    setSelectedPlaceName(favorite.alias);
+
+    setCoords({
+      lat: favorite.lat,
+      lon: favorite.lon,
+    });
   };
 
   const { data, isLoading, isError, error } = useWeatherQuery(
@@ -175,21 +188,12 @@ export function App() {
             )}
 
             {favorites.map((favorite) => (
-              <article
+              <FavoriteWeatherCard
                 key={favorite.placeId}
-                className="rounded-2xl border border-slate-200 p-4 transition hover:shadow-md"
-              >
-                <p className="font-semibold text-slate-900">{favorite.alias}</p>
-                <p className="mt-1 text-xs text-slate-500">{favorite.name}</p>
-
-                <button
-                  type="button"
-                  onClick={() => removeFavorite(favorite.placeId)}
-                  className="mt-3 text-xs font-semibold text-red-500"
-                >
-                  삭제
-                </button>
-              </article>
+                favorite={favorite}
+                onSelect={handleSelectFavorite}
+                onRemove={removeFavorite}
+              />
             ))}
           </div>
         </section>
