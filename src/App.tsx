@@ -3,10 +3,10 @@ import { useWeatherQuery } from "./entities/weather/model/useWeatherQuery";
 import { WeatherCard } from "./entities/weather/ui/WeatherCard";
 import { getCurrentPosition } from "./shared/lib/geoloaction";
 import { PlaceSearchBox } from "./features/search-place/ui/placeSearchBox";
-import type { Place } from "./entities/place/model/types";
+import type { Place } from "./entities/favorite/model/types";
 import { getCoordsByKakao } from "./shared/api/kakaoApi";
 import { useFavorites } from "./features/favorite-place/model/useFavorites";
-import type { FavoritePlace } from "./entities/weather/model/types";
+import type { FavoritePlace } from "./entities/favorite/model/types";
 import { FavoriteWeatherCard } from "./features/favorite-place/ui/FavoriteWeatherCard";
 
 type Coordinates = {
@@ -23,7 +23,8 @@ export function App() {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [placeError, setPlaceError] = useState<string | null>(null);
 
-  const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const { favorites, addFavorite, removeFavorite, updateAlias, isFavorite } =
+    useFavorites();
 
   useEffect(() => {
     getCurrentPosition()
@@ -193,6 +194,7 @@ export function App() {
                 favorite={favorite}
                 onSelect={handleSelectFavorite}
                 onRemove={removeFavorite}
+                onUpdateAlias={updateAlias}
               />
             ))}
           </div>

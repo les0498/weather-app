@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { places } from "../../../entities/place/lib/parseDistricts";
 import { searchPlaces } from "../../../entities/place/lib/searchPlaces";
-import type { Place } from "../../../entities/place/model/types";
+import type { Place } from "../../../entities/favorite/model/types";
 
 type PlaceSearchBoxProps = {
   onSelectPlace: (place: Place) => void;

@@ -1,16 +1,18 @@
-import type { FavoritePlace } from "@/entities/weather/model/types";
+import type { FavoritePlace } from "@/entities/favorite/model/types";
 import { useWeatherQuery } from "../../../entities/weather/model/useWeatherQuery";
 
 type FavoriteWeatherCardProps = {
   favorite: FavoritePlace;
   onSelect: (favorite: FavoritePlace) => void;
   onRemove: (placeId: string) => void;
+  onUpdateAlias: (placeId: string, alias: string) => void;
 };
 
 export function FavoriteWeatherCard({
   favorite,
   onSelect,
   onRemove,
+  onUpdateAlias,
 }: FavoriteWeatherCardProps) {
   const { data, isLoading, isError } = useWeatherQuery(
     favorite.lat,
@@ -26,7 +28,11 @@ export function FavoriteWeatherCard({
       >
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="font-semibold text-slate-900">{favorite.alias}</p>
+            <input
+              defaultValue={favorite.alias}
+              onBlur={(e) => onUpdateAlias(favorite.placeId, e.target.value)}
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-900 outline-none focus:border-sky-500"
+            />
             <p className="mt-1 text-xs text-slate-500">{favorite.name}</p>
           </div>
 
