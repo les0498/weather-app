@@ -70,19 +70,17 @@ export function App() {
       return;
     }
 
-    try {
-      addFavorite({
-        id: crypto.randomUUID(),
-        placeId: selectedPlace.id,
-        name: selectedPlace.name,
-        alias: selectedPlace.name,
-        lat: coords.lat,
-        lon: coords.lon,
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        setPlaceError(error.message);
-      }
+    const success = addFavorite({
+      id: crypto.randomUUID(),
+      placeId: selectedPlace.id,
+      name: selectedPlace.name,
+      alias: selectedPlace.name,
+      lat: coords.lat,
+      lon: coords.lon,
+    });
+
+    if (!success) {
+      setPlaceError("즐겨찾기는 최대 6개까지 가능합니다.");
     }
   };
 
@@ -132,7 +130,7 @@ export function App() {
             )}
           </aside>
 
-          <section className="space-y-4">
+          <section className="min-w-0 space-y-4">
             {locationError && (
               <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
                 {locationError}

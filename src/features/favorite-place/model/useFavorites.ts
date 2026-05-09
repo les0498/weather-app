@@ -24,18 +24,17 @@ export const useFavorites = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
   }, [favorites]);
 
-  const addFavorite = (favorite: FavoritePlace) => {
-    setFavorites((prev) => {
-      if (prev.some((item) => item.placeId === favorite.placeId)) {
-        return prev;
-      }
+  const addFavorite = (favorite: FavoritePlace): boolean => {
+    if (favorites.some((item) => item.placeId === favorite.placeId)) {
+      return true;
+    }
 
-      if (prev.length >= MAX_COUNT) {
-        throw new Error("즐겨찾기는 최대 6개까지 가능합니다.");
-      }
+    if (favorites.length >= MAX_COUNT) {
+      return false;
+    }
 
-      return [...prev, favorite];
-    });
+    setFavorites((prev) => [...prev, favorite]);
+    return true;
   };
 
   const removeFavorite = (placeId: string) => {
