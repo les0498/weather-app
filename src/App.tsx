@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useWeatherQuery } from "./entities/weather/model/useWeatherQuery";
 import { WeatherCard } from "./entities/weather/ui/WeatherCard";
+
 import { getCurrentPosition } from "./shared/lib/geoloaction";
-import { PlaceSearchBox } from "./features/search-place/ui/placeSearchBox";
-import type { Place } from "./entities/favorite/model/types";
 import { getCoordsByKakao } from "./shared/api/kakaoApi";
+
+import { PlaceSearchBox } from "./features/search-place/ui/placeSearchBox";
 import { useFavorites } from "./features/favorite-place/model/useFavorites";
-import type { FavoritePlace } from "./entities/favorite/model/types";
 import { FavoriteWeatherCard } from "./features/favorite-place/ui/FavoriteWeatherCard";
+
+import type { Place } from "./entities/favorite/model/types";
+import type { FavoritePlace } from "./entities/favorite/model/types";
 
 type Coordinates = {
   lat: number;
@@ -15,16 +20,29 @@ type Coordinates = {
 };
 
 export function App() {
+  const navigate = useNavigate();
+
   const [coords, setCoords] = useState<Coordinates | null>(null);
+
   const [locationError, setLocationError] = useState<string | null>(null);
+
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+
   const [selectedPlaceName, setSelectedPlaceName] = useState<string | null>(
     null,
   );
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+
   const [placeError, setPlaceError] = useState<string | null>(null);
 
   const { favorites, addFavorite, removeFavorite, updateAlias, isFavorite } =
     useFavorites();
+
+  const { data, isLoading, isError, error } = useWeatherQuery(
+    coords?.lat,
+    coords?.lon,
+  );
+
+  const weather = data ?? null;
 
   useEffect(() => {
     getCurrentPosition()
@@ -42,7 +60,9 @@ export function App() {
   const handleSelectPlace = async (place: Place) => {
     try {
       setPlaceError(null);
+
       setSelectedPlace(place);
+
       setSelectedPlaceName(place.fullName);
 
       const result = await getCoordsByKakao(place.fullName);
@@ -88,31 +108,19 @@ export function App() {
   };
 
   const handleSelectFavorite = (favorite: FavoritePlace) => {
-    setPlaceError(null);
-    setSelectedPlace(null);
-    setSelectedPlaceName(favorite.alias);
-
-    setCoords({
-      lat: favorite.lat,
-      lon: favorite.lon,
-    });
+    navigate(`/weather/${favorite.lat}/${favorite.lon}`);
   };
-
-  const { data, isLoading, isError, error } = useWeatherQuery(
-    coords?.lat,
-    coords?.lon,
-  );
-
-  const weather = data ?? null;
 
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-6 md:py-10">
       <div className="mx-auto max-w-6xl space-y-6">
         <header className="rounded-3xl bg-white p-6 shadow-sm">
           <p className="text-sm font-medium text-sky-600">Weather App</p>
+
           <h1 className="mt-2 text-3xl font-bold text-slate-900">
             오늘 날씨 확인
           </h1>
+
           <p className="mt-3 text-sm leading-6 text-slate-500">
             현재 위치 또는 검색한 대한민국 행정구역의 날씨를 확인합니다.
           </p>
@@ -178,6 +186,7 @@ export function App() {
         <section className="rounded-3xl bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-slate-900">즐겨찾기</h2>
+
             <span className="text-xs text-slate-500">{favorites.length}/6</span>
           </div>
 
