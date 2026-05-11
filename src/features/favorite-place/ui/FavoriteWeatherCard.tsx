@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FavoritePlace } from "@/entities/favorite/model/types";
 import { useWeatherQuery } from "../../../entities/weather/model/useWeatherQuery";
 import { FavoriteWeatherCardSkeleton } from "./FavoriteWeatherCardSkeleton";
+import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 
 type FavoriteWeatherCardProps = {
   favorite: FavoritePlace;
@@ -86,9 +87,7 @@ export function FavoriteWeatherCard({
 
         {/* isLoading 분기 제거 — 위에서 스켈레톤으로 처리 */}
         {isError && (
-          <p className="mt-3 text-xs text-red-400">
-            날씨 정보를 불러오지 못했습니다.
-          </p>
+          <p className="mt-3 text-xs text-red-400">{ERROR_MESSAGES.WEATHER}</p>
         )}
 
         {data && (

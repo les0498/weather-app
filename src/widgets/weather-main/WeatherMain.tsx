@@ -2,6 +2,7 @@ import { WeatherCard } from "@/entities/weather/ui/WeatherCard";
 import { WeatherCardSkeleton } from "./WeatherCardSkeleton";
 import { ErrorBox } from "@/shared/ui/ErrorBox";
 import type { WeatherSummary } from "@/entities/weather/model/types";
+import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 
 interface WeatherMainProps {
   isLoading: boolean;
@@ -23,9 +24,7 @@ export function WeatherMain({
     return (
       <ErrorBox
         message={
-          error instanceof Error
-            ? error.message
-            : "날씨 정보를 불러오지 못했습니다."
+          error instanceof Error ? error.message : ERROR_MESSAGES.WEATHER
         }
       />
     );

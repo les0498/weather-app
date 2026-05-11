@@ -16,6 +16,7 @@ import { useWeatherQuery } from "@/entities/weather/model/useWeatherQuery";
 
 // shared
 import { ErrorBox } from "@/shared/ui/ErrorBox";
+import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 
 export function HomePage() {
   // 1) 위치
@@ -50,7 +51,7 @@ export function HomePage() {
       lat: coords.lat,
       lon: coords.lon,
     });
-    if (!success) setFavoriteError("즐겨찾기는 최대 6개까지 가능합니다.");
+    if (!success) setFavoriteError(ERROR_MESSAGES.FAVORITE_LIMIT);
   };
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-sky-50 to-blue-100">

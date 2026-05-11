@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { getCoordsByKakao } from "@/shared/api/kakaoApi";
 import type { Place } from "@/entities/place/model/types";
+import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 
 type Coordinates = { lat: number; lon: number };
 
@@ -30,13 +31,13 @@ export function usePlaceSearch(
 
       const result = await getCoordsByKakao(place.fullName);
       if (!result.documents.length) {
-        setPlaceError("해당 장소의 정보가 제공되지 않습니다.");
+        setPlaceError(ERROR_MESSAGES.PLACE);
         return;
       }
       const { x, y } = result.documents[0];
       onCoordsChange({ lat: Number(y), lon: Number(x) });
     } catch {
-      setPlaceError("해당 장소의 정보가 제공되지 않습니다.");
+      setPlaceError(ERROR_MESSAGES.PLACE);
     }
   };
 

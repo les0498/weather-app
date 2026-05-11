@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCurrentPosition } from "@/shared/lib/geolocation";
+import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 
 type Coordinates = { lat: number; lon: number };
 
@@ -21,7 +22,7 @@ export function useCurrentLocation(): UseCurrentLocationReturn {
           lon: position.coords.longitude,
         }),
       )
-      .catch(() => setLocationError("현재 위치를 가져올 수 없습니다."));
+      .catch(() => setLocationError(ERROR_MESSAGES.LOCATION));
   }, []);
 
   return { coords, setCoords, locationError };
