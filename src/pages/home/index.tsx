@@ -8,7 +8,7 @@ import { FavoritesSection } from "@/widgets/favorites-section/FavoritesSection";
 
 // features
 import { PlaceSearchBox } from "@/features/search-place/ui/placeSearchBox";
-import { useCurrentLocation } from "@/features/search-place/model/useCurrentLoaction";
+import { useCurrentLocation } from "@/features/search-place/model/useCurrentLocation";
 import { usePlaceSearch } from "@/features/search-place/model/usePlaceSearch";
 import { useFavorites } from "@/features/favorite-place/model/useFavorites";
 

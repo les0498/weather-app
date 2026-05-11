@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "@/pages/home";
-import { WeatherDetailPage } from "@/pages/WeatherDetailPage";
+import { WeatherDetailPage } from "@/pages/weather-detail";
 
 export function Router() {
   return (
