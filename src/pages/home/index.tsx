@@ -53,16 +53,16 @@ export function HomePage() {
     });
     if (!success) setFavoriteError("즐겨찾기는 최대 6개까지 가능합니다.");
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-sky-50 to-blue-100">
       <Header />
 
-      <main className="mx-auto max-w-6xl px-4 py-8 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
-          {/* 사이드바: 검색 + 선택 장소 + 즐겨찾기 토글 */}
-          <aside className="space-y-4">
-            <div className="rounded-3xl bg-white/70 p-5 shadow-sm backdrop-blur-sm">
+      <main className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
+        {/* 모바일: 1열 세로 스택 / lg: 사이드바+메인 2열 */}
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[340px_1fr] lg:gap-6">
+          {/* 사이드바 */}
+          <aside className="flex flex-col gap-3 lg:gap-4">
+            <div className="rounded-2xl bg-white/70 p-4 shadow-sm backdrop-blur-sm sm:rounded-3xl sm:p-5">
               <PlaceSearchBox onSelectPlace={handleSelectPlace} />
             </div>
 
@@ -98,8 +98,8 @@ export function HomePage() {
             {favoriteError && <ErrorBox message={favoriteError} />}
           </aside>
 
-          {/* 메인 날씨 위젯 */}
-          <section>
+          {/* 날씨 카드: 모바일에서 사이드바 바로 아래 */}
+          <section className="w-full">
             <WeatherMain
               isLoading={isLoading}
               isError={isError}
@@ -109,7 +109,7 @@ export function HomePage() {
           </section>
         </div>
 
-        {/* 즐겨찾기 위젯 */}
+        {/* 즐겨찾기 — 기존과 동일 */}
         <FavoritesSection
           favorites={favorites}
           onRemove={removeFavorite}
