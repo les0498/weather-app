@@ -1,15 +1,18 @@
-import { useNavigate } from "react-router-dom";
 import { FavoriteWeatherCard } from "@/features/favorite-place/ui/FavoriteWeatherCard";
+import { FavoriteWeatherCardSkeleton } from "@/features/favorite-place/ui/FavoriteWeatherCardSkeleton";
 import type { FavoritePlace } from "@/entities/favorite/model/types";
+import { useNavigate } from "react-router-dom";
 
 interface FavoritesSectionProps {
   favorites: FavoritePlace[];
+  isLoading?: boolean;
   onRemove: (id: string) => void;
   onUpdateAlias: (id: string, alias: string) => void;
 }
 
 export function FavoritesSection({
   favorites,
+  isLoading = false,
   onRemove,
   onUpdateAlias,
 }: FavoritesSectionProps) {
@@ -28,7 +31,14 @@ export function FavoritesSection({
         </span>
       </div>
 
-      {favorites.length === 0 ? (
+      {/* 로딩 중이면 스켈레톤 3개 표시 */}
+      {isLoading ? (
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <FavoriteWeatherCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : favorites.length === 0 ? (
         <div className="mt-6 flex flex-col items-center gap-2 py-8 text-slate-400">
           <p className="text-sm">아직 즐겨찾기한 장소가 없어요</p>
           <p className="text-xs">장소 검색 후 즐겨찾기에 추가해보세요</p>

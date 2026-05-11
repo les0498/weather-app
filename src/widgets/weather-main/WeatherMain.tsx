@@ -1,4 +1,5 @@
 import { WeatherCard } from "@/entities/weather/ui/WeatherCard";
+import { WeatherCardSkeleton } from "./WeatherCardSkeleton";
 import { ErrorBox } from "@/shared/ui/ErrorBox";
 import type { WeatherSummary } from "@/entities/weather/model/types";
 
@@ -15,16 +16,8 @@ export function WeatherMain({
   error,
   weather,
 }: WeatherMainProps) {
-  if (isLoading) {
-    return (
-      <div className="flex h-64 items-center justify-center rounded-3xl bg-white/70 shadow-sm backdrop-blur-sm">
-        <div className="flex flex-col items-center gap-3 text-slate-400">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-100 border-t-sky-400" />
-          <p className="text-sm">날씨 정보를 불러오는 중...</p>
-        </div>
-      </div>
-    );
-  }
+  // 기존 로딩 스피너 → 스켈레톤으로 교체
+  if (isLoading) return <WeatherCardSkeleton />;
 
   if (isError) {
     return (
@@ -41,7 +34,7 @@ export function WeatherMain({
   if (!weather) return null;
 
   return (
-    <div className="rounded-3xl bg-white/70 shadow-sm backdrop-blur-sm">
+    <div className="w-full rounded-2xl bg-white/70 shadow-sm backdrop-blur-sm sm:rounded-3xl">
       <WeatherCard weather={weather} />
     </div>
   );

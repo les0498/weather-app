@@ -1,4 +1,3 @@
-// src/pages/home/index.tsx
 import { useState } from "react";
 
 // widgets

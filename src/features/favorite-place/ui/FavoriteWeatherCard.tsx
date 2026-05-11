@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { FavoritePlace } from "@/entities/favorite/model/types";
 import { useWeatherQuery } from "../../../entities/weather/model/useWeatherQuery";
+import { FavoriteWeatherCardSkeleton } from "./FavoriteWeatherCardSkeleton";
 
 type FavoriteWeatherCardProps = {
   favorite: FavoritePlace;
@@ -28,13 +29,14 @@ export function FavoriteWeatherCard({
     onUpdateAlias(favorite.placeId, alias);
   };
 
+  // 로딩 중이면 스켈레톤 반환
+  if (isLoading) return <FavoriteWeatherCardSkeleton />;
+
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-0.5">
-      {/* 상단 컬러 바 */}
       <div className="h-1 w-full bg-gradient-to-r from-sky-400 to-indigo-500" />
 
       <div className="p-4">
-        {/* 별칭 + 온도 */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             {isEditing ? (
@@ -82,14 +84,7 @@ export function FavoriteWeatherCard({
           )}
         </div>
 
-        {/* 날씨 상태 */}
-        {isLoading && (
-          <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
-            <div className="h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-sky-500" />
-            불러오는 중...
-          </div>
-        )}
-
+        {/* isLoading 분기 제거 — 위에서 스켈레톤으로 처리 */}
         {isError && (
           <p className="mt-3 text-xs text-red-400">
             날씨 정보를 불러오지 못했습니다.
@@ -116,7 +111,6 @@ export function FavoriteWeatherCard({
           </button>
         )}
 
-        {/* 삭제 버튼 */}
         <button
           type="button"
           onClick={() => onRemove(favorite.placeId)}
