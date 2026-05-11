@@ -1,22 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { QueryProvider } from "./app/providers/QueryProvider";
+import { Router } from "./app/router";
 import "./index.css";
 
-import { App } from "./App";
-import { QueryProvider } from "./app/providers/QueryProvider";
-import { WeatherDetailPage } from "./pages/WeatherDetailPage";
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
     <QueryProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/weather/:lat/:lon" element={<WeatherDetailPage />} />
-        </Routes>
-      </BrowserRouter>
+      <Router />
     </QueryProvider>
-  </React.StrictMode>,
+  </StrictMode>,
 );
