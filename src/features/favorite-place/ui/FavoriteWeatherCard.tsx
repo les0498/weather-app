@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { FavoritePlace } from "@/entities/favorite/model/types";
 import { useWeatherQuery } from "../../../entities/weather/model/useWeatherQuery";
 
@@ -19,57 +20,124 @@ export function FavoriteWeatherCard({
     favorite.lon,
   );
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [alias, setAlias] = useState(favorite.alias);
+
+  const handleAliasBlur = () => {
+    setIsEditing(false);
+    onUpdateAlias(favorite.placeId, alias);
+  };
+
   return (
-    <article className="rounded-2xl border border-slate-200 p-4 transition hover:shadow-md">
-      <button
-        type="button"
-        onClick={() => onSelect(favorite)}
-        className="block w-full text-left"
-      >
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <input
-              defaultValue={favorite.alias}
-              onBlur={(e) => onUpdateAlias(favorite.placeId, e.target.value)}
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-900 outline-none focus:border-sky-500"
-            />
-            <p className="mt-1 text-xs text-slate-500">{favorite.name}</p>
+    <article className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-0.5">
+      {/* 상단 컬러 바 */}
+      <div className="h-1 w-full bg-gradient-to-r from-sky-400 to-indigo-500" />
+
+      <div className="p-4">
+        {/* 별칭 + 온도 */}
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            {isEditing ? (
+              <input
+                autoFocus
+                value={alias}
+                onChange={(e) => setAlias(e.target.value)}
+                onBlur={handleAliasBlur}
+                onKeyDown={(e) => e.key === "Enter" && handleAliasBlur()}
+                className="w-full rounded-lg border border-sky-300 bg-sky-50 px-2 py-1 text-sm font-bold text-slate-900 outline-none"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsEditing(true)}
+                className="flex items-center gap-1 text-left"
+              >
+                <p className="truncate text-sm font-bold text-slate-900">
+                  {alias}
+                </p>
+                <svg
+                  className="h-3 w-3 shrink-0 text-slate-400 opacity-0 transition group-hover:opacity-100"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"
+                  />
+                </svg>
+              </button>
+            )}
+            <p className="mt-0.5 truncate text-xs text-slate-400">
+              {favorite.name}
+            </p>
           </div>
 
           {data && (
-            <p className="text-xl font-bold text-slate-900">
+            <p className="shrink-0 text-2xl font-black text-slate-900">
               {data.currentTemp}°
             </p>
           )}
         </div>
 
+        {/* 날씨 상태 */}
         {isLoading && (
-          <p className="mt-4 text-xs text-slate-400">날씨 불러오는 중...</p>
+          <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+            <div className="h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-sky-500" />
+            불러오는 중...
+          </div>
         )}
 
         {isError && (
-          <p className="mt-4 text-xs text-red-500">
+          <p className="mt-3 text-xs text-red-400">
             날씨 정보를 불러오지 못했습니다.
           </p>
         )}
 
         {data && (
-          <div className="mt-4 flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-600">
-            <span>{data.description}</span>
-            <span>
-              최저 {data.minTemp}° / 최고 {data.maxTemp}°
-            </span>
-          </div>
+          <button
+            type="button"
+            onClick={() => onSelect(favorite)}
+            className="mt-3 w-full rounded-xl bg-slate-50 px-3 py-2 text-left transition hover:bg-slate-100"
+          >
+            <div className="flex items-center justify-between text-xs text-slate-500">
+              <span>{data.description}</span>
+              <span>
+                <span className="text-sky-500">↓{data.minTemp}°</span>
+                {" / "}
+                <span className="text-rose-500">↑{data.maxTemp}°</span>
+              </span>
+            </div>
+            <p className="mt-1 text-[11px] text-slate-400">
+              탭해서 상세 보기 →
+            </p>
+          </button>
         )}
-      </button>
 
-      <button
-        type="button"
-        onClick={() => onRemove(favorite.placeId)}
-        className="mt-3 text-xs font-semibold text-red-500"
-      >
-        삭제
-      </button>
+        {/* 삭제 버튼 */}
+        <button
+          type="button"
+          onClick={() => onRemove(favorite.placeId)}
+          className="mt-3 flex items-center gap-1 text-[11px] font-medium text-slate-400 transition hover:text-red-500"
+        >
+          <svg
+            className="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+          삭제
+        </button>
+      </div>
     </article>
   );
 }
