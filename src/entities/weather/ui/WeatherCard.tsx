@@ -69,13 +69,6 @@ export function WeatherCard({ weather }: WeatherCardProps) {
                 <p className="text-[11px] font-medium text-slate-600">
                   {item.time}
                 </p>
-                {item.icon && (
-                  <img
-                    src={`https://openweathermap.org/img/wn/${item.icon}.png`}
-                    alt={item.description}
-                    className="h-8 w-8"
-                  />
-                )}
                 <p className="text-base font-bold text-slate-900">
                   {item.temp}°
                 </p>

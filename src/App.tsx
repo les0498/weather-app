@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 import { useWeatherQuery } from "./entities/weather/model/useWeatherQuery";
 import { WeatherCard } from "./entities/weather/ui/WeatherCard";
-import { getCurrentPosition } from "./shared/lib/geoloaction";
+import { getCurrentPosition } from "./shared/lib/geolocation";
 import { getCoordsByKakao } from "./shared/api/kakaoApi";
 import { PlaceSearchBox } from "./features/search-place/ui/placeSearchBox";
 import { useFavorites } from "./features/favorite-place/model/useFavorites";
 import { FavoriteWeatherCard } from "./features/favorite-place/ui/FavoriteWeatherCard";
-import type { Place, FavoritePlace } from "./entities/favorite/model/types";
+import type { FavoritePlace } from "./entities/favorite/model/types";
+
+import type { Place } from "./entities/place/model/types";
 
 type Coordinates = { lat: number; lon: number };
 

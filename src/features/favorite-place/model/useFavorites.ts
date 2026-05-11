@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { FavoritePlace } from "@/entities/weather/model/types";
+import type { FavoritePlace } from "../../../entities/favorite/model/types";
 
 const STORAGE_KEY = "weather-favorites";
 const MAX_COUNT = 6;

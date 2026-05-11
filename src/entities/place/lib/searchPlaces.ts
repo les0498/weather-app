@@ -1,4 +1,4 @@
-import type { Place } from "../../favorite/model/types";
+import type { Place } from "../model/types";
 
 export const searchPlaces = (places: Place[], keyword: string): Place[] => {
   const normalizedKeyword = keyword.trim().toLowerCase();

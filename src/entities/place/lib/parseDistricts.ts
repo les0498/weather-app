@@ -1,5 +1,5 @@
 import districts from "../../../shared/data/korea_districts.json";
-import type { Place } from "../../favorite/model/types";
+import type { Place } from "../model/types";
 
 export const places: Place[] = districts.map((district) => {
   const parts = district.split("-");
