@@ -20,22 +20,6 @@ const getNext24HourForecastItems = (forecast: ForecastResponse) => {
   return forecast.list.slice(0, FORECAST_ITEM_COUNT_FOR_24_HOURS);
 };
 
-const getNext24HourMinMax = (
-  current: OpenWeatherResponse,
-  forecast: ForecastResponse,
-) => {
-  const forecastTemps = getNext24HourForecastItems(forecast).map(
-    (item) => item.main.temp,
-  );
-
-  const temps = [current.main.temp, ...forecastTemps];
-
-  return {
-    min: Math.min(...temps),
-    max: Math.max(...temps),
-  };
-};
-
 const getTodayMinMax = (
   current: OpenWeatherResponse,
   forecast: ForecastResponse,
