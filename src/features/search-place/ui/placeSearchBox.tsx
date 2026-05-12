@@ -3,6 +3,7 @@ import { places } from "../../../entities/place/lib/parseDistricts";
 import { searchPlaces } from "../../../entities/place/lib/searchPlaces";
 import type { Place } from "../../../entities/place/model/types";
 import { useDebounce } from "@/shared/hooks/useDebounce";
+import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 
 type PlaceSearchBoxProps = {
   onSelectPlace: (place: Place) => void;
@@ -32,7 +33,7 @@ export function PlaceSearchBox({ onSelectPlace }: PlaceSearchBoxProps) {
       />
 
       {keyword.trim() && results.length === 0 && (
-        <p className="mt-3 text-sm text-slate-500">검색 결과가 없습니다.</p>
+        <p className="mt-3 text-sm text-slate-500">{ERROR_MESSAGES.PLACE}</p>
       )}
 
       {results.length > 0 && (
