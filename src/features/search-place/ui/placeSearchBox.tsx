@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { places } from "../../../entities/place/lib/parseDistricts";
 import { searchPlaces } from "../../../entities/place/lib/searchPlaces";
 import type { Place } from "../../../entities/place/model/types";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 
 type PlaceSearchBoxProps = {
   onSelectPlace: (place: Place) => void;
@@ -10,9 +11,14 @@ type PlaceSearchBoxProps = {
 export function PlaceSearchBox({ onSelectPlace }: PlaceSearchBoxProps) {
   const [keyword, setKeyword] = useState("");
 
+  const debouncedKeyword = useDebounce(keyword, 300);
+
   const results = useMemo(() => {
-    return searchPlaces(places, keyword);
-  }, [keyword]);
+    if (!debouncedKeyword.trim()) {
+      return [];
+    }
+    return searchPlaces(places, debouncedKeyword);
+  }, [debouncedKeyword]);
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
