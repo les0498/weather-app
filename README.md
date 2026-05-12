@@ -190,3 +190,13 @@ if (isLoading) return <FavoriteWeatherCardSkeleton />;
 ## 📌 회고
 
 처음엔 "날씨 조회 앱" 수준이었지만, 점진적인 리팩토링과 구조 개선을 통해 유지보수성과 사용자 경험을 함께 고려하는 방향으로 발전시켰습니다.
+
+단순 날씨 조회 기능 구현을 넘어:
+
+- 행정구역 기반 검색 정확도 개선
+- API 응답 normalize
+- React Query 기반 서버 상태 관리
+- debounce / skeleton 기반 UX 개선
+- FSD 구조 기반 유지보수성 향상
+
+등 실제 서비스 구조를 고려한 방향으로 개발했습니다.
