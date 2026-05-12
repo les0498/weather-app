@@ -7,11 +7,12 @@ import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 import { WeatherDetailStats } from "./WeatherDetailStats";
 
 export function WeatherDetailPage() {
-  const { lat, lon } = useParams();
+  const { lat, lon, locationName } = useParams();
 
   const { data, isLoading, isError, error } = useWeatherQuery(
     Number(lat),
     Number(lon),
+    locationName ? decodeURIComponent(locationName) : undefined,
   );
 
   return (

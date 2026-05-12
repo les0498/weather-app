@@ -7,7 +7,10 @@ export function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/weather/:lat/:lon" element={<WeatherDetailPage />} />
+        <Route
+          path="/weather/:lat/:lon/:locationName"
+          element={<WeatherDetailPage />}
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -35,6 +35,7 @@ export function HomePage() {
   const { data, isLoading, isError, error } = useWeatherQuery(
     coords?.lat,
     coords?.lon,
+    selectedPlaceName ?? undefined,
   );
 
   const handleToggleFavorite = () => {

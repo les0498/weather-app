@@ -19,7 +19,9 @@ export function FavoritesSection({
   const navigate = useNavigate();
 
   const handleSelect = (favorite: FavoritePlace) => {
-    navigate(`/weather/${favorite.lat}/${favorite.lon}`);
+    navigate(
+      `/weather/${favorite.lat}/${favorite.lon}/${encodeURIComponent(favorite.alias)}`,
+    );
   };
 
   return (

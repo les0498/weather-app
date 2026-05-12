@@ -53,11 +53,12 @@ const getHourlyTemps = (forecast: ForecastResponse): HourlyTemperature[] => {
 export const normalizeWeather = (
   current: OpenWeatherResponse,
   forecast: ForecastResponse,
+  locationName?: string,
 ): WeatherSummary => {
   const { min, max } = getTodayMinMax(current, forecast);
 
   return {
-    locationName: current.name,
+    locationName: locationName ?? current.name,
 
     currentTemp: Math.round(current.main.temp),
 

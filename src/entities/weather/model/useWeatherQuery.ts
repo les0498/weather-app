@@ -2,16 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import { getCurrentWeather, getForecast } from "../api/weatherApi";
 import { normalizeWeather } from "../lib/normalizeWeather";
 
-export const useWeatherQuery = (lat?: number, lon?: number) => {
+export const useWeatherQuery = (
+  lat?: number,
+  lon?: number,
+  locationName?: string,
+) => {
   return useQuery({
-    queryKey: ["weather", lat, lon],
+    queryKey: ["weather", lat, lon, locationName],
     queryFn: async () => {
       const [current, forecast] = await Promise.all([
         getCurrentWeather(lat!, lon!),
         getForecast(lat!, lon!),
       ]);
 
-      return normalizeWeather(current, forecast);
+      return normalizeWeather(current, forecast, locationName);
     },
     enabled: !!lat && !!lon,
 
