@@ -36,6 +36,24 @@ const getNext24HourMinMax = (
   };
 };
 
+const getTodayMinMax = (
+  current: OpenWeatherResponse,
+  forecast: ForecastResponse,
+) => {
+  const today = new Date().toISOString().slice(0, 10); // "2024-05-12"
+
+  const todayTemps = forecast.list
+    .filter((item) => item.dt_txt.startsWith(today))
+    .map((item) => item.main.temp);
+
+  const temps = [current.main.temp, ...todayTemps];
+
+  return {
+    min: Math.min(...temps),
+    max: Math.max(...temps),
+  };
+};
+
 const getHourlyTemps = (forecast: ForecastResponse): HourlyTemperature[] => {
   return getNext24HourForecastItems(forecast).map((item) => {
     const weather = item.weather[0];
@@ -52,7 +70,7 @@ export const normalizeWeather = (
   current: OpenWeatherResponse,
   forecast: ForecastResponse,
 ): WeatherSummary => {
-  const { min, max } = getNext24HourMinMax(current, forecast);
+  const { min, max } = getTodayMinMax(current, forecast);
 
   return {
     locationName: current.name,
