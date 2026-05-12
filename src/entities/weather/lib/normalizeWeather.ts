@@ -7,7 +7,7 @@ import type {
 
 const FORECAST_ITEM_COUNT_FOR_24_HOURS = 8;
 
-const formatKoreaTime = (timestamp: number) => {
+const formatKoreaClockTime = (timestamp: number) => {
   return new Intl.DateTimeFormat("ko-KR", {
     timeZone: "Asia/Seoul",
     hour: "2-digit",
@@ -40,7 +40,7 @@ const getHourlyTemps = (forecast: ForecastResponse): HourlyTemperature[] => {
   return getNext24HourForecastItems(forecast).map((item) => {
     const weather = item.weather[0];
     return {
-      time: formatKoreaTime(item.dt),
+      time: formatKoreaClockTime(item.dt),
       temp: Math.round(item.main.temp),
       icon: weather?.icon ?? "",
       description: weather?.description ?? "정보 없음",
@@ -56,11 +56,29 @@ export const normalizeWeather = (
 
   return {
     locationName: current.name,
+
     currentTemp: Math.round(current.main.temp),
+
     minTemp: Math.round(min),
+
     maxTemp: Math.round(max),
+
     description: current.weather[0]?.description ?? "정보 없음",
+
     icon: current.weather[0]?.icon ?? "",
+
     hourlyTemps: getHourlyTemps(forecast),
+
+    feelsLike: Math.round(current.main.feels_like),
+
+    humidity: current.main.humidity,
+
+    pressure: current.main.pressure,
+
+    windSpeed: current.wind.speed,
+
+    sunrise: formatKoreaClockTime(current.sys.sunrise),
+
+    sunset: formatKoreaClockTime(current.sys.sunset),
   };
 };

@@ -4,6 +4,16 @@ export type OpenWeatherResponse = {
     temp: number;
     temp_min: number;
     temp_max: number;
+    feels_like: number;
+    humidity: number;
+    pressure: number;
+  };
+  wind: {
+    speed: number;
+  };
+  sys: {
+    sunrise: number;
+    sunset: number;
   };
   weather: {
     description: string;
@@ -19,6 +29,13 @@ export type WeatherSummary = {
   description: string;
   icon: string;
   hourlyTemps: HourlyTemperature[];
+
+  feelsLike: number;
+  humidity: number;
+  pressure: number;
+  windSpeed: number;
+  sunrise: string;
+  sunset: string;
 };
 
 export type ForecastResponse = {

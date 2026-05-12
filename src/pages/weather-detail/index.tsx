@@ -4,6 +4,7 @@ import { WeatherCard } from "@/entities/weather/ui/WeatherCard";
 import { WeatherCardSkeleton } from "@/widgets/weather-main/WeatherCardSkeleton";
 import { ErrorBox } from "@/shared/ui/ErrorBox";
 import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
+import { WeatherDetailStats } from "./WeatherDetailStats";
 
 export function WeatherDetailPage() {
   const { lat, lon } = useParams();
@@ -24,7 +25,12 @@ export function WeatherDetailPage() {
             }
           />
         )}
-        {data && <WeatherCard weather={data} />}
+        {data && (
+          <>
+            <WeatherCard weather={data} />
+            <WeatherDetailStats weather={data} />
+          </>
+        )}
       </div>
     </main>
   );
