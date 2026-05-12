@@ -28,12 +28,19 @@ export type ForecastResponse = {
     main: {
       temp: number;
     };
+    weather: {
+      description: string;
+      icon: string;
+    }[];
   }[];
 };
 
 export type HourlyTemperature = {
   time: string;
   temp: number;
+
+  icon: string;
+  description: string;
 };
 
 export type GeocodingResponse = {

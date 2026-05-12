@@ -38,9 +38,12 @@ const getNext24HourMinMax = (
 
 const getHourlyTemps = (forecast: ForecastResponse): HourlyTemperature[] => {
   return getNext24HourForecastItems(forecast).map((item) => {
+    const weather = item.weather[0];
     return {
       time: formatKoreaTime(item.dt),
       temp: Math.round(item.main.temp),
+      icon: weather?.icon ?? "",
+      description: weather?.description ?? "정보 없음",
     };
   });
 };
